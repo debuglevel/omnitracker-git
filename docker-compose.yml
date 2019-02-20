@@ -1,0 +1,8 @@
+version: '3'
+services:
+  omnitracker-git:
+    build: .
+    image: omnitracker-git
+    environment:
+      - DAEMON=yes
+      - SLEEP_DURATION=60
