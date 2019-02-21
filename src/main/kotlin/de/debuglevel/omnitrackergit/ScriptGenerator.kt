@@ -21,7 +21,11 @@ class ScriptGenerator(private val baseDirectory: Path) {
         logger.debug("Building file name for $script...")
 
         // generates something like: "123 MyFolder"
-        val directoryPath = "${script.folder?.id} ${script.folder?.alias}"
+        val directoryPath = if (script.folder != null) {
+            "${script.folder?.id} ${script.folder?.alias}"
+        } else {
+            "-1 no folder"
+        }
 
         // generates something like: "456 17 MyScript"
         val sanitizedName = script.name
@@ -58,11 +62,11 @@ class ScriptGenerator(private val baseDirectory: Path) {
 
         var content =
             """
-                    ' File: $scriptFilePath
+                    ' File: ${scriptFilePath.joinToString("/")}
                     ' ID: ${script.id}
                     ' Name: ${script.name}
-                    ' Type: ${script.type}
-                    ' Folder: ${script.folder?.path}
+                    ' Type: ${script.type?.id}
+                    ' Folder: ${script.folder?.name ?: "no folder"}
                     ' ====================================================
 
                 """.trimIndent()
