@@ -70,7 +70,7 @@ class Export : CliktCommand(help = "Export scripts into local directory") {
 
 class List : CliktCommand(help = "List all scripts") {
     override fun run() {
-        logger.debug("Getting scripts from database...")
+        logger.debug { "Getting scripts from database..." }
         OmnitrackerDatabase().scripts
             .values
             .sortedWith(compareBy({ it.folder?.name }, { it.name }))

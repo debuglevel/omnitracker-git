@@ -12,13 +12,13 @@ class ScriptGenerator(private val baseDirectory: Path) {
     private val logger = KotlinLogging.logger {}
 
     fun writeFiles(scripts: Collection<Script>) {
-        logger.debug("Generating script files...")
+        logger.debug { "Writing script files..." }
 
         scripts.forEach { writeFile(it) }
     }
 
     private fun buildFilePath(script: Script): Path {
-        logger.debug("Building file name for $script...")
+        logger.trace { "Building file name for $script..." }
 
         // generates something like: "123 MyFolder"
         val directoryPath = if (script.folder != null) {
@@ -44,20 +44,18 @@ class ScriptGenerator(private val baseDirectory: Path) {
         // generates something like: "123 MyFolder/456 17 MyScript"
         val scriptPath = Paths.get(directoryPath, scriptFilename)
 
-        logger.debug("Built file path for $script: $scriptPath")
+        logger.trace { "Built file path for $script: $scriptPath" }
 
         return scriptPath
     }
 
     private fun createDirectory(scriptDirectory: Path) {
-        //val fullDirectory = baseDirectory.resolve(scriptDirectory).toPath()
-        logger.debug { "Creating directory (if not already exists) '$scriptDirectory'" }
+        logger.trace { "Creating directory (if not already exists) '$scriptDirectory'" }
         Files.createDirectories(scriptDirectory)
-        //return fullDirectory
     }
 
     private fun writeFile(script: Script) {
-        logger.debug("Writing script '${script.folder?.path}\\${script.name}'...")
+        logger.trace { "Writing script '${script.folder?.path}\\${script.name}'..." }
         val scriptFilePath = buildFilePath(script)
 
         var content =
@@ -75,7 +73,7 @@ class ScriptGenerator(private val baseDirectory: Path) {
         createDirectory(baseDirectory.resolve(scriptFilePath.parent))
         val scriptRepositoryPath = baseDirectory.resolve(scriptFilePath)
 
-        logger.debug("Writing script to file '$scriptRepositoryPath'...")
+        logger.debug { "Writing script '${script.folder?.path}\\\${script.name}' to file '$scriptRepositoryPath'..." }
 
         val writer = object : PrintWriter(scriptRepositoryPath.toFile(), StandardCharsets.UTF_8.name()) {
             override fun println() {

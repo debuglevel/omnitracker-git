@@ -31,7 +31,7 @@ class GitRepository(
     }
 
     fun close() {
-        logger.debug { "Closing..." }
+        logger.trace { "Closing..." }
         git.close()
     }
 
@@ -47,7 +47,7 @@ class GitRepository(
             val relativeDirectory = it.relativeTo(localGitDirectory)
 
             if (!relativeDirectory.startsWith(".git") && !relativeDirectory.toString().isEmpty()) {
-                logger.debug { "Removing $relativeDirectory..." }
+                logger.trace { "Removing $relativeDirectory..." }
 
                 git.rm()
                     .addFilepattern(relativeDirectory.toString())
@@ -88,10 +88,10 @@ class GitRepository(
             .setPushAll()
 
         try {
-            logger.debug { "Messages from push result:" }
+            logger.trace { "Messages from push result:" }
             val it = pushCommand.call().iterator()
             if (it.hasNext()) {
-                logger.debug { it.next().messages }
+                logger.trace { it.next().messages }
             }
         } catch (e: InvalidRemoteException) {
             logger.error(e) { "Pushing to remote failed" }
