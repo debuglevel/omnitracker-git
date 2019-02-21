@@ -20,7 +20,7 @@ RUN ./gradlew build
 ## Final image
 FROM openjdk:8-jre-alpine
 RUN mkdir /app
-COPY --from=builder /src/build/libs/*-all.jar /app/omnitracker-git.jar
+COPY --from=builder /src/build/libs/*.jar /app/omnitracker-git.jar
 COPY docker-entrypoint.sh /app/
 WORKDIR /app
 

@@ -19,7 +19,7 @@ plugins {
 
     // bundle all dependencies into one fat shadowed jar
     // (gets automatically triggered when application plugin is present)
-    id 'com.github.johnrengelman.shadow' version '2.0.4'
+    id 'com.github.johnrengelman.shadow' version '4.0.4'
 }
 
 group 'de.debuglevel.omnitrackergit'
@@ -32,13 +32,10 @@ repositories {
     maven {
         url "https://dl.bintray.com/debuglevel/maven"
     }
-    //mavenLocal()
 }
 
 dependencies {
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-
-    compile "de.debuglevel.omnitrackerdatabasebinding:omnitrackerdatabasebinding:0.0.11"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
 
     // Tests
     testCompile 'org.junit.jupiter:junit-jupiter-api:5.2.0'
@@ -48,19 +45,25 @@ dependencies {
 
     // Logging
     // see http://saltnlight5.blogspot.com/2013/08/how-to-configure-slf4j-with-different.html for a quick introduction to slf4j
-    compile 'io.github.microutils:kotlin-logging:1.6.22'
-    compile 'org.slf4j:slf4j-api:1.7.25'
-    compile 'org.slf4j:slf4j-simple:1.7.25'
+    implementation 'io.github.microutils:kotlin-logging:1.6.22'
+    implementation 'org.slf4j:slf4j-api:1.7.25'
+    implementation 'org.slf4j:slf4j-simple:1.7.25'
 
+    // Configuration
+    implementation "com.natpryce:konfig:1.6.9.0"
+    
     // CLI
     implementation 'com.github.ajalt:clikt:1.6.0'
 
+    // OMNITRACKER
+    implementation "de.debuglevel.omnitrackerdatabasebinding:omnitrackerdatabasebinding:0.0.12"
+
     // Database
-    compile group: 'net.sf.ucanaccess', name: 'ucanaccess', version: '4.0.4'
-    compile group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '6.4.0.jre8'
+    //implementation group: 'net.sf.ucanaccess', name: 'ucanaccess', version: '4.0.4'
+    //implementation group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '6.4.0.jre8'
 
     // git
-    compile group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '4.11.0.201803080745-r'
+    implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '4.11.0.201803080745-r'
 }
 
 // application plugin configuration
