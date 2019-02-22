@@ -12,7 +12,7 @@ if [[ "${DAEMON,,}" = "yes" ]]; then
   echo
 
   while true; do
-    java -jar /app/omnitracker-git.jar
+    java -jar /app/omnitracker-git.jar commit
 
     echo "Sleeping for $SLEEP_DURATION seconds before restart..."
     sleep ${SLEEP_DURATION}
