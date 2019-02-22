@@ -33,7 +33,7 @@ Microsoft JDBC driver) are supported.
 
 # Security
 For MSSQL, you should create a special user which has read-only access the
-`scripts` and `stringTranslations` tables.
+`scripts`, `ProblemArea`, `stringTranslations` and `stringTransShort` tables.
 
 # List all scripts
 ```
