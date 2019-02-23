@@ -83,7 +83,7 @@ class GitRepository(
         logger.debug { "Pushing to remote..." }
 
         val pushCommand = git.push()
-            //.setCredentialsProvider(credentialsProvider) // TODO: might be unnecessary
+            .setCredentialsProvider(credentialsProvider)
             .setForce(true)
             .setPushAll()
 
