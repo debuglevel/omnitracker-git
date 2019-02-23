@@ -31,11 +31,7 @@ git.password=myPassword
 Microsoft Access (via `ucanaccess` JDBC driver) and MSSQL (official
 Microsoft JDBC driver) are supported.
 
-# Security
-For MSSQL, you should create a special user which has read-only access the
-`scripts`, `ProblemArea`, `stringTranslations` and `stringTransShort` tables.
-
-# List all scripts
+## List all scripts
 To list all scripts, use the `list` command (although this is rather a command to check for a working database connection than anything useful): 
 ```
 $ java -jar .\build\libs\omnitrackergit-0.0.1-SNAPSHOT-all.jar list
@@ -53,14 +49,21 @@ $ java -jar .\build\libs\omnitrackergit-0.0.1-SNAPSHOT-all.jar list
 458804  | \(Alle Ordner)\00. Basisdaten\00. 03 Web-Funktionen\OnOpen
 ```
 
-# Export all scripts
+## Export all scripts
 To export all scripts to a local directory named `target`, use the `export` command:
 ```
 $ java -jar .\build\libs\omnitrackergit-0.0.1-SNAPSHOT-all.jar export target
 ```
 
-# Commit all scripts
+## Commit all scripts
 To commit the current state of all scripts to the git repository defined in your configuration, use the `commit` command:
 ```
 $ java -jar .\build\libs\omnitrackergit-0.0.1-SNAPSHOT-all.jar commit
 ```
+
+# Docker
+See `docker-compose.yml` for an example how to run this tool with Docker (which might be especially useful for running as a daemon). 
+
+# Security
+For MSSQL, you should create a special user which has read-only access the
+`scripts`, `ProblemArea`, `stringTranslations` and `stringTransShort` tables.
