@@ -35,7 +35,7 @@ build:
   artifacts:
     paths:
       # use only shadowed jars
-      - "build/libs/*-all.jar"
+      - "build/libs/*.jar"
       - "build/distributions/*shadow*.tar"
 
       # reports (e.g. about failed tests)
