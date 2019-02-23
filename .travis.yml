@@ -23,6 +23,8 @@ notifications:
 # See https://docs.travis-ci.com/user/deployment/releases
 deploy:
   - provider: releases
+
+    # Set up via https://docs.travis-ci.com/user/deployment/releases#authenticating-with-an-oauth-token
     api_key:
       secure: txPqR2Wj96buxGxm0bUIYhE0/p8R740pOunvHOs6i4E1DtS0D4rJARTM3MSRgeda7rhDMsjEdog9DOhBXT/COmhv9XN7KR/WvjhAJFmfdHoqvSBPPTmW9BbZQirpYxb0VrWbtygHAO9bAYJPN+XNm0mST22p+Pdv1LyZvGnQJK04SV+ItKh0G3aQKg3Q4I5o79a0eyRgY6WmyadPsM26W+cgQ8ah6GpSzmZkdbByC030/QG3JhPjvp0ku1B6klBiLSSzpA7BjjiTrNpvLNbXBFyDtD8ehrg77zPpnaOmChqwgYvIEaqe7mwz4sHYCc6f/ce6sHFFfCeUbbZqCe58tAmZKglljt7ZyzT/+8MuYuSm8/QS2IB/8kDrYuTDYvIIXPHlVjsWUhI5zpKfxhbhvTy/PO7WhVVPUQxjuMd4k/6b5ixCoSsJ/weYhZ8h21QNQH41HLaQ8VSMkE30c1razFCh+0IOzGGESDjTJ5eisdFKKg670ZolCZMQHtZ/avO39c3S06QiUTnCrELiGuPc/COTJR9On5B4p63S3eYWnfu2ak0+u31W72QmY3Bo+g7SIw/FkSOOBIPuI5XwlvM5HUU/6NBnDGhGRLl+bZhaevfrgzNwvo7yM9/X+/kHDh4hHPHpIcJRxfNgXwFZVlkX1VQctBIZtm6KIsh8xSar/1k=
 
