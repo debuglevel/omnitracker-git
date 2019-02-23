@@ -36,6 +36,7 @@ For MSSQL, you should create a special user which has read-only access the
 `scripts`, `ProblemArea`, `stringTranslations` and `stringTransShort` tables.
 
 # List all scripts
+To list all scripts, use the `list` command (although this is rather a command to check for a working database connection than anything useful): 
 ```
 $ java -jar .\build\libs\omnitrackergit-0.0.1-SNAPSHOT-all.jar list
 274     | \(Alle Ordner)\BasicStat_Snapshot_AddPercentage
@@ -53,11 +54,13 @@ $ java -jar .\build\libs\omnitrackergit-0.0.1-SNAPSHOT-all.jar list
 ```
 
 # Export all scripts
+To export all scripts to a local directory named `target`, use the `export` command:
 ```
-$ java -jar .\build\libs\omnitrackergit-0.0.1-SNAPSHOT-all.jar export myDirectory
+$ java -jar .\build\libs\omnitrackergit-0.0.1-SNAPSHOT-all.jar export target
 ```
 
 # Commit all scripts
+To commit the current state of all scripts to the git repository defined in your configuration, use the `commit` command:
 ```
 $ java -jar .\build\libs\omnitrackergit-0.0.1-SNAPSHOT-all.jar commit
 ```

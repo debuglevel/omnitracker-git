@@ -1,8 +1,12 @@
 version: '3'
 services:
   omnitracker-git:
-    build: .
-    image: omnitracker-git
+    # Check https://gitlab.com/debuglevel/omnitracker-git/container_registry for stable image URLs (if you do not want to use "latest" but a certain version)
+    image: registry.gitlab.com/debuglevel/omnitracker-git:latest
     environment:
       - DAEMON=yes
       - SLEEP_DURATION=60
+      - DATABASE_CONNECTION_STRING=jdbc:sqlserver://myhost\\MYINSTANCE;databaseName=mydatabase;user=myuser;password=mypassword
+      - GIT_REPOSITORY_URI=http://mygit/myrepo
+      - GIT_USER=myUser
+      - GIT_PASSWORD=myPassword
