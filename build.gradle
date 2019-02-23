@@ -58,10 +58,6 @@ dependencies {
     // OMNITRACKER
     implementation "de.debuglevel.omnitrackerdatabasebinding:omnitrackerdatabasebinding:0.0.12"
 
-    // Database
-    //implementation group: 'net.sf.ucanaccess', name: 'ucanaccess', version: '4.0.4'
-    //implementation group: 'com.microsoft.sqlserver', name: 'mssql-jdbc', version: '6.4.0.jre8'
-
     // git
     implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '4.11.0.201803080745-r'
 }
