@@ -24,9 +24,9 @@ notifications:
 deploy:
   - provider: releases
 
-    # Set up via https://docs.travis-ci.com/user/deployment/releases#authenticating-with-an-oauth-token
+    # Set up via https://docs.travis-ci.com/user/deployment/releases#authenticating-with-an-oauth-token; keep a copy of .travis.yml, use "travis setup releases", extract the api_key and use it in your copy of .travis.yml
     api_key:
-      secure: txPqR2Wj96buxGxm0bUIYhE0/p8R740pOunvHOs6i4E1DtS0D4rJARTM3MSRgeda7rhDMsjEdog9DOhBXT/COmhv9XN7KR/WvjhAJFmfdHoqvSBPPTmW9BbZQirpYxb0VrWbtygHAO9bAYJPN+XNm0mST22p+Pdv1LyZvGnQJK04SV+ItKh0G3aQKg3Q4I5o79a0eyRgY6WmyadPsM26W+cgQ8ah6GpSzmZkdbByC030/QG3JhPjvp0ku1B6klBiLSSzpA7BjjiTrNpvLNbXBFyDtD8ehrg77zPpnaOmChqwgYvIEaqe7mwz4sHYCc6f/ce6sHFFfCeUbbZqCe58tAmZKglljt7ZyzT/+8MuYuSm8/QS2IB/8kDrYuTDYvIIXPHlVjsWUhI5zpKfxhbhvTy/PO7WhVVPUQxjuMd4k/6b5ixCoSsJ/weYhZ8h21QNQH41HLaQ8VSMkE30c1razFCh+0IOzGGESDjTJ5eisdFKKg670ZolCZMQHtZ/avO39c3S06QiUTnCrELiGuPc/COTJR9On5B4p63S3eYWnfu2ak0+u31W72QmY3Bo+g7SIw/FkSOOBIPuI5XwlvM5HUU/6NBnDGhGRLl+bZhaevfrgzNwvo7yM9/X+/kHDh4hHPHpIcJRxfNgXwFZVlkX1VQctBIZtm6KIsh8xSar/1k=
+      secure: cjVxjwLxBkAz45hguvsLsjaNVIBzh97QmxlAOdwdLXzqOgEhX1nUsLYgwWnbnAfozBLkLGQfwaOOGiZrW2bIzFujli9OD0VpNPWKcqD8L1iWnR7bgTpdn5fMx3p2VecfIKd1hEqD+HVYLAyCHHaOV0L8uKQoBPUPL5M3rjxajxA0Vp2LdTeMRgIHVcV8Qw3SokN3oCOhqmCRE7TzImXaBo8oXqZ4kswi05q+d2cAk/SbOBITnMoGwaud9TJj/zgg+4SVTR1Ojkh2QmMhXSP3P516AkLqn4qxHSmdIW8PHlifuvBjIUrFhdFOdkAMRuOzjRKacWKH2gwYd7JqQT4c4YUhYvaZairAgOU3RmCPJzqyerbNaS3AItYGH5TztUd8LgDWwYhiCV/rLvz5ibHxMVqt0bOKO4zyS7EpHIhj9HLckX4QBJYfYq+OHo+Y8t3nPfnZD8Qa8U0kKoxaS6ooBTvdtbaj7H13hqkS0Z1VXv9p21GHgolvOjGL5dIUusvzQCoszLBE//ZtKNmk0Yx2hWeZGiGvHbUnrDxDFQUgzWGF/gos+TixJVYNIw/BM65ayFwcNEhBSrhChGBeGX9woQ9VaiTSUr++GLExULLc6h6OEbKKQuCHt/rSXcsKyfwzIJTRkAqcPmpBB8J5PyUSLbgWKh9gka1Xaip7CrBbL64=
 
     file_glob: true
     file:
