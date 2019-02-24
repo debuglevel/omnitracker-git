@@ -7,7 +7,7 @@ before_install:
   - chmod +x gradle/wrapper/gradle-wrapper.jar
 
 script:
-  - ./gradlew build
+  - ./gradlew build --scan -s
 
 notifications:
   email: false
