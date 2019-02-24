@@ -1,8 +1,3 @@
-#FROM openjdk:8-jdk-alpine AS builder
-#COPY . /src/
-#WORKDIR /src/
-#RUN ./gradlew build
-
 ## Building stage
 FROM openjdk:8-jdk-alpine AS builder
 WORKDIR /src/
