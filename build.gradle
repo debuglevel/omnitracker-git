@@ -43,19 +43,19 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
     // Tests
-    testCompile 'org.junit.jupiter:junit-jupiter-api:5.2.0'
-    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.2.0'
-    testCompile 'org.junit.jupiter:junit-jupiter-params:5.2.0'
-    testCompile 'org.assertj:assertj-core:3.10.0'
+    testCompile 'org.junit.jupiter:junit-jupiter-api:5.4.0'
+    testRuntime 'org.junit.jupiter:junit-jupiter-engine:5.4.0'
+    testCompile 'org.junit.jupiter:junit-jupiter-params:5.4.0'
+    testCompile 'org.assertj:assertj-core:3.12.0'
 
     // Logging
     // See http://saltnlight5.blogspot.com/2013/08/how-to-configure-slf4j-with-different.html for a quick introduction to slf4j
-    implementation 'io.github.microutils:kotlin-logging:1.6.22'
+    implementation 'io.github.microutils:kotlin-logging:1.6.25'
     implementation 'org.slf4j:slf4j-api:1.7.25'
     implementation 'org.slf4j:slf4j-simple:1.7.25'
 
     // Configuration
-    implementation "com.natpryce:konfig:1.6.9.0"
+    implementation "com.natpryce:konfig:1.6.10.0"
     
     // CLI
     implementation 'com.github.ajalt:clikt:1.6.0'
@@ -64,7 +64,7 @@ dependencies {
     implementation "de.debuglevel.omnitrackerdatabasebinding:omnitrackerdatabasebinding:0.0.12"
 
     // git
-    implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '4.11.0.201803080745-r'
+    implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.2.1.201812262042-r'
 }
 
 // application plugin configuration
