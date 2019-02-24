@@ -31,7 +31,7 @@ build:
   stage: build
   image: openjdk:8-jdk-alpine
   script:
-    - ./gradlew build --scan -s
+    - ./gradlew build
   artifacts:
     paths:
       # use only shadowed jars

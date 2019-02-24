@@ -15,7 +15,7 @@ RUN ./gradlew --version
 
 # build source
 COPY . /src/
-RUN ./gradlew build --scan -s
+RUN ./gradlew build
 
 ## Final image
 FROM openjdk:8-jre-alpine
