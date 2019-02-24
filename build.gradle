@@ -1,11 +1,9 @@
 buildscript {
-    ext.kotlin_version = '1.3.21'
-
     repositories {
         jcenter()
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin"
     }
 }
 
@@ -38,7 +36,8 @@ repositories {
 }
 
 dependencies {
-    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
+    // Kotlin
+    implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 
     // Tests
     testCompile 'org.junit.jupiter:junit-jupiter-api:5.2.0'
