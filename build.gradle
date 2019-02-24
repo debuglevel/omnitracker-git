@@ -10,6 +10,9 @@ buildscript {
 }
 
 plugins {
+    // Like --scan option to gradle; should be placed before any other plugins
+    id 'com.gradle.build-scan' version '2.1' 
+
     id 'java'
     id 'org.jetbrains.kotlin.jvm' version '1.3.21'
 
@@ -80,4 +83,11 @@ jar {
                 'Implementation-Version': version,
                 'Main-Class': mainClassName
     }
+}
+
+// Accept the license agreement for com.gradle.build-scan plugin
+buildScan {
+    termsOfServiceUrl = 'https://gradle.com/terms-of-service'
+    termsOfServiceAgree = 'yes'
+    publishAlways()
 }
