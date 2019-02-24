@@ -1,6 +1,6 @@
 OMNITRACKER stores scripts in the `scripts` database table.
 Unfortunately, there is no version control of these scripts (except your
-database backups). This tool extracts all scripts and commits them in a
+database backups). This tool extracts all scripts and commits them into a
 git repository. This can be run as a one-shot or as a daemon (pulling
 every X seconds).
 

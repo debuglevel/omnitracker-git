@@ -4,7 +4,7 @@ echo "Starting OMNITRACKER-git docker-entrypoint.sh..."
 
 DAEMON=${DAEMON:-NO}
 SLEEP_DURATION=${SLEEP_DURATION:-60}
-# compare lower case
+# Compare strings lower case
 if [[ "${DAEMON,,}" = "yes" ]]; then
   SLEEP_DURATION=60
 
