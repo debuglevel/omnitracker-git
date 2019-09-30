@@ -17,6 +17,38 @@ class ScriptGenerator(private val baseDirectory: Path) {
         scripts.forEach { writeFile(it) }
     }
 
+    private fun writeFile(script: Script) {
+        val scriptPath = "${script.folder?.path}" + "\\" + script.name
+        logger.trace { "Writing script '$scriptPath'..." }
+        val scriptFilePath = buildFilePath(script)
+
+        var content =
+            """
+                    ' File: ${scriptFilePath.joinToString("/")}
+                    ' ID: ${script.id}
+                    ' Name: ${script.name}
+                    ' Type: ${script.type?.id}
+                    ' Folder: ${script.folder?.name ?: "no folder"}
+                    ' ====================================================
+
+                """.trimIndent()
+        content += script.content
+
+        createDirectory(baseDirectory.resolve(scriptFilePath.parent))
+        val scriptRepositoryPath = baseDirectory.resolve(scriptFilePath)
+
+        logger.debug { "Writing script '${script.folder?.path}\\\${script.name}' to file '$scriptRepositoryPath'..." }
+
+        val writer = object : PrintWriter(scriptRepositoryPath.toFile(), StandardCharsets.UTF_8.name()) {
+            override fun println() {
+                write("\n")
+            }
+        }
+
+        writer.append(content)
+        writer.close()
+    }
+
     private fun buildFilePath(script: Script): Path {
         logger.trace { "Building file name for $script..." }
 
@@ -52,37 +84,5 @@ class ScriptGenerator(private val baseDirectory: Path) {
     private fun createDirectory(scriptDirectory: Path) {
         logger.trace { "Creating directory (if not already exists) '$scriptDirectory'" }
         Files.createDirectories(scriptDirectory)
-    }
-
-    private fun writeFile(script: Script) {
-        val scriptPath = "${script.folder?.path}" + "\\" + script.name
-        logger.trace { "Writing script '$scriptPath'..." }
-        val scriptFilePath = buildFilePath(script)
-
-        var content =
-            """
-                    ' File: ${scriptFilePath.joinToString("/")}
-                    ' ID: ${script.id}
-                    ' Name: ${script.name}
-                    ' Type: ${script.type?.id}
-                    ' Folder: ${script.folder?.name ?: "no folder"}
-                    ' ====================================================
-
-                """.trimIndent()
-        content += script.content
-
-        createDirectory(baseDirectory.resolve(scriptFilePath.parent))
-        val scriptRepositoryPath = baseDirectory.resolve(scriptFilePath)
-
-        logger.debug { "Writing script '${script.folder?.path}\\\${script.name}' to file '$scriptRepositoryPath'..." }
-
-        val writer = object : PrintWriter(scriptRepositoryPath.toFile(), StandardCharsets.UTF_8.name()) {
-            override fun println() {
-                write("\n")
-            }
-        }
-
-        writer.append(content)
-        writer.close()
     }
 }
