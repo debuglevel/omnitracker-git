@@ -39,6 +39,7 @@ class Commit : CliktCommand(help = "Commit scripts to git repository") {
             git.addAll()
             git.commit()
             git.push()
+            git.close()
             git.delete()
         }
     }
