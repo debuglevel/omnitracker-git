@@ -55,7 +55,8 @@ class ScriptGenerator(private val baseDirectory: Path) {
     }
 
     private fun writeFile(script: Script) {
-        logger.trace { "Writing script '${script.folder?.path}\\${script.name}'..." }
+        val scriptPath = "${script.folder?.path}" + "\\" + script.name
+        logger.trace { "Writing script '$scriptPath'..." }
         val scriptFilePath = buildFilePath(script)
 
         var content =
