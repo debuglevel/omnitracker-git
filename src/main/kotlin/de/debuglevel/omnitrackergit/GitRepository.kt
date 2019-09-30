@@ -5,6 +5,7 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.errors.InvalidRemoteException
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
 import java.io.File
+import java.nio.file.Files
 import java.nio.file.Path
 
 class GitRepository(
@@ -36,8 +37,20 @@ class GitRepository(
     }
 
     fun delete() {
-        logger.debug { "Deleting repository..." }
-        localGitDirectory.deleteRecursively()
+        logger.debug { "Deleting repository (${fileCountRecursive(localGitDirectory)} files)..." }
+        val fullyDeleted = localGitDirectory.deleteRecursively()
+        logger.debug {
+            "Deleted repository. Full deletion succeeded: $fullyDeleted; (${fileCountRecursive(
+                localGitDirectory
+            )} files left)"
+        }
+    }
+
+    fun fileCountRecursive(dir: File): Long {
+        return Files.walk(dir.toPath())
+            .parallel()
+            .filter { p -> !p.toFile().isDirectory }
+            .count()
     }
 
     fun removeAll() {
