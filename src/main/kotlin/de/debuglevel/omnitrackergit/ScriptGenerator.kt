@@ -54,7 +54,11 @@ class ScriptGenerator(private val baseDirectory: Path) {
 
         // generates something like: "123 MyFolder"
         val directoryPath = if (script.folder != null) {
-            "${script.folder?.id} ${script.folder?.alias}"
+            if (script.folder?.alias == null) {
+                "${script.folder?.id} no alias"
+            } else {
+                "${script.folder?.id} ${script.folder?.alias}"
+            }
         } else {
             "-1 no folder"
         }
