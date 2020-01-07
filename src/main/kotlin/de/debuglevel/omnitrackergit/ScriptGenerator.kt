@@ -49,6 +49,21 @@ class ScriptGenerator(private val baseDirectory: Path) {
         writer.close()
     }
 
+    private fun sanitizeFilename(filename: String?): String? {
+        return filename
+            ?.replace('\\', '_')
+            ?.replace('/', '_')
+            ?.replace(':', '_')
+            ?.replace('*', '_')
+            ?.replace('?', '_')
+            ?.replace('"', '_')
+            ?.replace('<', '_')
+            ?.replace('>', '_')
+            ?.replace('|', '_')
+            ?.replace('"', '_')
+            ?.replace('\u0000', '_')
+    }
+
     private fun buildFilePath(script: Script): Path {
         logger.trace { "Building file name for $script..." }
 
@@ -57,25 +72,15 @@ class ScriptGenerator(private val baseDirectory: Path) {
             if (script.folder?.alias == null) {
                 "${script.folder?.id} no alias"
             } else {
-                "${script.folder?.id} ${script.folder?.alias}"
+                val sanitizedFolderAlias = sanitizeFilename(script.folder?.alias)
+                "${script.folder?.id} $sanitizedFolderAlias"
             }
         } else {
             "-1 no folder"
         }
 
         // generates something like: "456 17 MyScript"
-        val sanitizedName = script.name
-            .replace('\\', '_')
-            .replace('/', '_')
-            .replace(':', '_')
-            .replace('*', '_')
-            .replace('?', '_')
-            .replace('"', '_')
-            .replace('<', '_')
-            .replace('>', '_')
-            .replace('|', '_')
-            .replace('"', '_')
-            .replace('\u0000', '_')
+        val sanitizedName = sanitizeFilename(script.name)
         val scriptFilename = "${script.id} ${script.type?.id} $sanitizedName"
 
         // generates something like: "123 MyFolder/456 17 MyScript"
