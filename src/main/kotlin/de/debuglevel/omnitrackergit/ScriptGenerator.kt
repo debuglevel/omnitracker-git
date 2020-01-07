@@ -75,6 +75,7 @@ class ScriptGenerator(private val baseDirectory: Path) {
             .replace('>', '_')
             .replace('|', '_')
             .replace('"', '_')
+            .replace('\u0000', '_')
         val scriptFilename = "${script.id} ${script.type?.id} $sanitizedName"
 
         // generates something like: "123 MyFolder/456 17 MyScript"
