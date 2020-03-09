@@ -1,8 +1,9 @@
 package de.debuglevel.omnitrackergit.repository
 
-import de.debuglevel.omnitrackerdatabasebinding.OmnitrackerDatabase
+import de.debuglevel.omnitrackergit.script.ScriptService
 import de.debuglevel.omnitrackergit.script.ScriptWriter
 import io.micronaut.context.annotation.Property
+import io.micronaut.scheduling.annotation.Scheduled
 import mu.KotlinLogging
 import javax.inject.Singleton
 
@@ -16,6 +17,18 @@ class RepositoryService(
     private val scriptService: ScriptService
 ) {
     private val logger = KotlinLogging.logger {}
+
+    @Scheduled(
+        fixedDelay = "\${app.omnitrackergit.periodical-commit.interval}",
+        initialDelay = "\${app.omnitrackergit.periodical-commit.interval}"
+    )
+    fun peridicallyCommitScripts() {
+        if (periodicalCommitEnabled) {
+            logger.debug { "Periodically committing scripts..." }
+            commitScripts()
+            logger.debug { "Periodically committed scripts" }
+        }
+    }
 
     fun commitScripts() {
         logger.debug { "Committing scripts..." }

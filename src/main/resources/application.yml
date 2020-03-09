@@ -8,6 +8,9 @@ app:
         uri: "C:\\Temp\\baregit"
         user: "myUser"
         password: "myPassword"
+    periodical-commit:
+      enabled: true
+      interval: 60s
 
   security:
     configurable-credential-authentication:
