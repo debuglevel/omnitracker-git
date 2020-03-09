@@ -21,15 +21,16 @@ class RepositoryService(
 
         val scripts = scriptService.getScripts()
 
+        val temporaryGitDirectory = createTempDir("omnitracker-git").toPath()
+
         val git = GitRepository(
             gitUri,
             gitUser,
-            gitPassword
+            gitPassword,
+            temporaryGitDirectory
         )
 
-        val temporaryGitDirectory = createTempDir("omnitracker-git").toPath()
-
-        git.clone(temporaryGitDirectory)
+        git.clone()
         git.removeAll()
         scriptWriter.writeFiles(scripts, temporaryGitDirectory)
         git.addAll()

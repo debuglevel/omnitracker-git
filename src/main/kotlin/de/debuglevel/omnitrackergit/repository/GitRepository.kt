@@ -4,24 +4,22 @@ import mu.KotlinLogging
 import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.errors.InvalidRemoteException
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
-import java.io.File
 import java.nio.file.Path
 
 class GitRepository(
     private val repositoryUri: String,
     username: String,
-    password: String
+    password: String,
+    directory: Path
 ) {
     private val logger = KotlinLogging.logger {}
 
     private val credentialsProvider = UsernamePasswordCredentialsProvider(username, password)
-    private lateinit var localGitDirectory: File
+    private var localGitDirectory = directory.toFile()
     private lateinit var git: Git
 
-    fun clone(directory: Path) {
-        logger.debug { "Cloning '$repositoryUri' to '${directory.toAbsolutePath()}'..." }
-
-        this.localGitDirectory = directory.toFile()
+    fun clone() {
+        logger.debug { "Cloning '$repositoryUri' to '${localGitDirectory.absolutePath}'..." }
 
         git = Git
             .cloneRepository()
@@ -30,7 +28,7 @@ class GitRepository(
             .setDirectory(localGitDirectory)
             .call()
 
-        logger.debug { "Cloned '$repositoryUri' to '${directory.toAbsolutePath()}'" }
+        logger.debug { "Cloned '$repositoryUri' to '${localGitDirectory.absolutePath}'" }
     }
 
     fun addAll() {

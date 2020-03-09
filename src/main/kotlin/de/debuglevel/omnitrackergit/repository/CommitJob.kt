@@ -13,8 +13,8 @@ class CommitJob(
     private val logger = KotlinLogging.logger {}
 
     @Scheduled(
-        fixedDelay = "\${app.omnitrackergit.periodical-commit.interval}",
-        initialDelay = "\${app.omnitrackergit.periodical-commit.interval}"
+        fixedDelay = "\${app.omnitrackergit.scheduled-commits.interval}",
+        initialDelay = "\${app.omnitrackergit.scheduled-commits.interval}"
     )
     fun commitScripts() {
         if (scheduledCommitsEnabled) {
