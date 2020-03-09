@@ -33,49 +33,6 @@ class GitRepository(
         logger.debug { "Cloned '$repositoryUri' to '${directory.toAbsolutePath()}'" }
     }
 
-    fun close() {
-        logger.trace { "Closing..." }
-        git.close()
-        logger.trace { "Closed" }
-    }
-
-    fun delete() {
-        logger.debug { "Deleting repository (${fileCountRecursive(localGitDirectory)} files)..." }
-        val fullyDeleted = localGitDirectory.deleteRecursively()
-        logger.debug {
-            "Deleted repository. Full deletion succeeded: $fullyDeleted; (${fileCountRecursive(
-                localGitDirectory
-            )} files left)"
-        }
-    }
-
-    private fun fileCountRecursive(directory: File): Long {
-        return Files.walk(directory.toPath())
-            .parallel()
-            .filter { p -> !p.toFile().isDirectory }
-            .count()
-    }
-
-    fun removeAll() {
-        logger.debug { "Removing all files..." }
-
-        localGitDirectory.walkTopDown().forEach {
-            val relativeDirectory = it.relativeTo(localGitDirectory)
-
-            if (!relativeDirectory.startsWith(".git") && !relativeDirectory.toString().isEmpty()) {
-                logger.trace { "Removing $relativeDirectory..." }
-
-                git.rm()
-                    .addFilepattern(relativeDirectory.toString())
-                    .call()
-
-                relativeDirectory.delete()
-            }
-        }
-
-        logger.debug { "Removed all files" }
-    }
-
     fun addAll() {
         logger.debug { "Adding all files..." }
 
@@ -117,5 +74,48 @@ class GitRepository(
         } catch (e: InvalidRemoteException) {
             logger.error(e) { "Pushing to remote failed" }
         }
+    }
+
+    private fun fileCountRecursive(directory: File): Long {
+        return Files.walk(directory.toPath())
+            .parallel()
+            .filter { p -> !p.toFile().isDirectory }
+            .count()
+    }
+
+    fun delete() {
+        logger.debug { "Deleting repository (${fileCountRecursive(localGitDirectory)} files)..." }
+        val fullyDeleted = localGitDirectory.deleteRecursively()
+        logger.debug {
+            "Deleted repository. Full deletion succeeded: $fullyDeleted; (${fileCountRecursive(
+                localGitDirectory
+            )} files left)"
+        }
+    }
+
+    fun removeAll() {
+        logger.debug { "Removing all files..." }
+
+        localGitDirectory.walkTopDown().forEach {
+            val relativeDirectory = it.relativeTo(localGitDirectory)
+
+            if (!relativeDirectory.startsWith(".git") && !relativeDirectory.toString().isEmpty()) {
+                logger.trace { "Removing $relativeDirectory..." }
+
+                git.rm()
+                    .addFilepattern(relativeDirectory.toString())
+                    .call()
+
+                relativeDirectory.delete()
+            }
+        }
+
+        logger.debug { "Removed all files" }
+    }
+
+    fun close() {
+        logger.trace { "Closing..." }
+        git.close()
+        logger.trace { "Closed" }
     }
 }
