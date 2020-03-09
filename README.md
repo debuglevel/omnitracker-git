@@ -1,7 +1,17 @@
+<!--- some badges to display on the GitHub page -->
+
+![Travis (.org)](https://img.shields.io/travis/debuglevel/omnitracker-git?label=Travis%20build)
+![Gitlab pipeline status](https://img.shields.io/gitlab/pipeline/debuglevel/omnitracker-git?label=GitLab%20build)
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/debuglevel/omnitracker-git?sort=semver)
+![GitHub](https://img.shields.io/github/license/debuglevel/omnitracker-git)
+
+# OMNITRACKER git
+
 OMNITRACKER stores scripts in the `scripts` database table.
 Unfortunately, there is no version control of these scripts (except your
-database backups). This tool extracts all scripts and commits them into a
-git repository. This can be run as a one-shot or as a daemon (pulling
+database backups). `omnitracker-git` extracts all scripts and commits them into a
+git repository.
+This can be run as a one-shot or as a daemon (pulling
 every X seconds).
 
 # Usage

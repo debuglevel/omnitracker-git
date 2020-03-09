@@ -1,4 +1,4 @@
-package de.debuglevel.omnitrackergit
+package de.debuglevel.omnitrackergit.repository
 
 import mu.KotlinLogging
 import org.eclipse.jgit.api.Git
@@ -29,11 +29,14 @@ class GitRepository(
             .setCredentialsProvider(credentialsProvider)
             .setDirectory(localGitDirectory)
             .call()
+
+        logger.debug { "Cloned '$repositoryUri' to '${directory.toAbsolutePath()}'" }
     }
 
     fun close() {
         logger.trace { "Closing..." }
         git.close()
+        logger.trace { "Closed" }
     }
 
     fun delete() {
@@ -46,8 +49,8 @@ class GitRepository(
         }
     }
 
-    fun fileCountRecursive(dir: File): Long {
-        return Files.walk(dir.toPath())
+    private fun fileCountRecursive(directory: File): Long {
+        return Files.walk(directory.toPath())
             .parallel()
             .filter { p -> !p.toFile().isDirectory }
             .count()
@@ -69,6 +72,8 @@ class GitRepository(
                 relativeDirectory.delete()
             }
         }
+
+        logger.debug { "Removed all files" }
     }
 
     fun addAll() {
@@ -77,6 +82,8 @@ class GitRepository(
         git.add()
             .addFilepattern(".")
             .call()
+
+        logger.debug { "Added all files" }
     }
 
     fun commit() {
@@ -87,6 +94,7 @@ class GitRepository(
                 .setMessage("Committing changed files by omnitracker-git")
                 .setAuthor("omnitracker-git", "omnitrackergit@invalid.invalid")
                 .call()
+            logger.debug { "Committed files" }
         } else {
             logger.debug { "Not committing, as there are no uncommitted changes." }
         }

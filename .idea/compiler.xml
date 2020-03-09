@@ -4,6 +4,8 @@
     <bytecodeTargetLevel>
       <module name="database2git_main" target="1.8" />
       <module name="database2git_test" target="1.8" />
+      <module name="omnitrackergit_main" target="1.8" />
+      <module name="omnitrackergit_test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>
