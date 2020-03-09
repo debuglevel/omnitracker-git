@@ -5,7 +5,6 @@ import org.eclipse.jgit.api.Git
 import org.eclipse.jgit.api.errors.InvalidRemoteException
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
 import java.io.File
-import java.nio.file.Files
 import java.nio.file.Path
 
 class GitRepository(
@@ -15,8 +14,8 @@ class GitRepository(
 ) {
     private val logger = KotlinLogging.logger {}
 
-    private lateinit var localGitDirectory: File
     private val credentialsProvider = UsernamePasswordCredentialsProvider(username, password)
+    private lateinit var localGitDirectory: File
     private lateinit var git: Git
 
     fun clone(directory: Path) {
@@ -24,7 +23,8 @@ class GitRepository(
 
         this.localGitDirectory = directory.toFile()
 
-        git = Git.cloneRepository()
+        git = Git
+            .cloneRepository()
             .setURI(repositoryUri)
             .setCredentialsProvider(credentialsProvider)
             .setDirectory(localGitDirectory)
@@ -47,10 +47,13 @@ class GitRepository(
         logger.debug { "Committing files..." }
 
         if (git.status().call().hasUncommittedChanges()) {
-            git.commit()
-                .setMessage("Committing changed files by omnitracker-git")
+            val uncommittedChangesCound = git.status().call().uncommittedChanges.count()
+
+            val commitCommand = git.commit()
+                .setMessage("Committing $uncommittedChangesCound changed files by omnitracker-git")
                 .setAuthor("omnitracker-git", "omnitrackergit@invalid.invalid")
                 .call()
+
             logger.debug { "Committed files" }
         } else {
             logger.debug { "Not committing, as there are no uncommitted changes." }
@@ -60,37 +63,24 @@ class GitRepository(
     fun push() {
         logger.debug { "Pushing to remote..." }
 
-        val pushCommand = git.push()
-            .setCredentialsProvider(credentialsProvider)
-            .setForce(true)
-            .setPushAll()
+        val pushCommand =
+            git.push()
+                .setCredentialsProvider(credentialsProvider)
+                .setForce(true)
+                .setPushAll()
 
         try {
-            logger.trace { "Messages from push result:" }
-            val it = pushCommand.call().iterator()
-            if (it.hasNext()) {
-                logger.trace { it.next().messages }
-            }
+            val messages = pushCommand.call().joinToString(";") { it.messages }
+            logger.trace { "Messages from push result: $messages" }
         } catch (e: InvalidRemoteException) {
             logger.error(e) { "Pushing to remote failed" }
         }
     }
 
-    private fun fileCountRecursive(directory: File): Long {
-        return Files.walk(directory.toPath())
-            .parallel()
-            .filter { p -> !p.toFile().isDirectory }
-            .count()
-    }
-
     fun delete() {
-        logger.debug { "Deleting repository (${fileCountRecursive(localGitDirectory)} files)..." }
+        logger.debug { "Deleting repository (${localGitDirectory.recursiveFileCount} files)..." }
         val fullyDeleted = localGitDirectory.deleteRecursively()
-        logger.debug {
-            "Deleted repository. Full deletion succeeded: $fullyDeleted; (${fileCountRecursive(
-                localGitDirectory
-            )} files left)"
-        }
+        logger.debug { "Deleted repository. Full deletion succeeded: $fullyDeleted; (${localGitDirectory.recursiveFileCount} files left)" }
     }
 
     fun removeAll() {
@@ -99,7 +89,7 @@ class GitRepository(
         localGitDirectory.walkTopDown().forEach {
             val relativeDirectory = it.relativeTo(localGitDirectory)
 
-            if (!relativeDirectory.startsWith(".git") && !relativeDirectory.toString().isEmpty()) {
+            if (!relativeDirectory.startsWith(".git") && relativeDirectory.toString().isNotEmpty()) {
                 logger.trace { "Removing $relativeDirectory..." }
 
                 git.rm()
