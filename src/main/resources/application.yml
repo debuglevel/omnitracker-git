@@ -8,7 +8,7 @@ app:
         uri: "C:\\Temp\\baregit"
         user: "myUser"
         password: "myPassword"
-    periodical-commit:
+    scheduled-commits:
       enabled: true
       interval: 60s
 

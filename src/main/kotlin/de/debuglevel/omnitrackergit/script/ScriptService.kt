@@ -5,9 +5,7 @@ import de.debuglevel.omnitrackerdatabasebinding.models.Script
 import de.debuglevel.omnitrackergit.EnvironmentUtils
 import io.micronaut.context.annotation.Property
 import mu.KotlinLogging
-import java.util.*
 import javax.inject.Singleton
-import java.lang.reflect.AccessibleObject.setAccessible
 
 @Singleton
 class ScriptService(
@@ -21,7 +19,7 @@ class ScriptService(
         EnvironmentUtils.addEnvironmentVariable("DATABASE_CONNECTION_STRING", connectionString)
     }
 
-    fun list(): Set<Script> {
+    fun getScripts(): Set<Script> {
         logger.debug { "Getting all scripts..." }
 
         val scripts = OmnitrackerDatabase().scripts.values

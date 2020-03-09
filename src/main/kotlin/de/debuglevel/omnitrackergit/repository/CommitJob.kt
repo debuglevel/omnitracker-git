@@ -6,8 +6,8 @@ import mu.KotlinLogging
 import javax.inject.Singleton
 
 @Singleton
-class PeriodicalCommitJob(
-    @Property(name = "app.omnitrackergit.periodical-commit.enabled") val periodicalCommitEnabled: Boolean,
+class CommitJob(
+    @Property(name = "app.omnitrackergit.scheduled-commits.enabled") val scheduledCommitsEnabled: Boolean,
     private val repositoryService: RepositoryService
 ) {
     private val logger = KotlinLogging.logger {}
@@ -17,7 +17,7 @@ class PeriodicalCommitJob(
         initialDelay = "\${app.omnitrackergit.periodical-commit.interval}"
     )
     fun commitScripts() {
-        if (periodicalCommitEnabled) {
+        if (scheduledCommitsEnabled) {
             logger.debug { "Periodically committing scripts..." }
             repositoryService.commitScripts()
             logger.debug { "Periodically committed scripts" }

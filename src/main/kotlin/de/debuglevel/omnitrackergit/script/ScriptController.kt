@@ -18,7 +18,7 @@ class ScriptController(private val scriptService: ScriptService) {
     fun getAll(): HttpResponse<Set<ScriptResponse>> {
         logger.debug("Called getAll()")
         return try {
-            val scripts = scriptService.list()
+            val scripts = scriptService.getScripts()
             val scriptsResponse = scripts
                 .map { ScriptResponse(it) }
                 .toSet()

@@ -8,7 +8,7 @@ import javax.inject.Singleton
 
 @Singleton
 class RepositoryService(
-    @Property(name = "app.omnitrackergit.git.repository.uri") val gitRepositoryUri: String,
+    @Property(name = "app.omnitrackergit.git.repository.uri") val gitUri: String,
     @Property(name = "app.omnitrackergit.git.repository.user") val gitUser: String,
     @Property(name = "app.omnitrackergit.git.repository.password") val gitPassword: String,
     private val scriptWriter: ScriptWriter,
@@ -19,19 +19,19 @@ class RepositoryService(
     fun commitScripts() {
         logger.debug { "Committing scripts..." }
 
-        val scripts = scriptService.list()
+        val scripts = scriptService.getScripts()
 
         val git = GitRepository(
-            gitRepositoryUri,
+            gitUri,
             gitUser,
             gitPassword
         )
 
-        val localGitDirectory = createTempDir("omnitracker-git").toPath()
+        val temporaryGitDirectory = createTempDir("omnitracker-git").toPath()
 
-        git.clone(localGitDirectory)
+        git.clone(temporaryGitDirectory)
         git.removeAll()
-        scriptWriter.writeFiles(scripts, localGitDirectory)
+        scriptWriter.writeFiles(scripts, temporaryGitDirectory)
         git.addAll()
         git.commit()
         git.push()
