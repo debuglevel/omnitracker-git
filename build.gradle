@@ -127,7 +127,7 @@ dependencies {
     implementation "de.debuglevel.omnitrackerdatabasebinding:omnitrackerdatabasebinding:0.0.12"
 
     // git
-    implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.2.1.201812262042-r'
+    implementation group: 'org.eclipse.jgit', name: 'org.eclipse.jgit', version: '5.6.1.202002131546-r'
 
     // Legacy configuration for omnitrackerdatabasebinding
     implementation "com.natpryce:konfig:1.6.10.0"
