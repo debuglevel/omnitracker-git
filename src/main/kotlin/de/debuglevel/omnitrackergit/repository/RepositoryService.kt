@@ -11,14 +11,16 @@ class RepositoryService(
     @Property(name = "app.omnitrackergit.git.repository.uri") val gitRepositoryUri: String,
     @Property(name = "app.omnitrackergit.git.repository.user") val gitUser: String,
     @Property(name = "app.omnitrackergit.git.repository.password") val gitPassword: String,
-    private val scriptWriter: ScriptWriter
-    ) {
+    @Property(name = "app.omnitrackergit.periodical-commit.enabled") val periodicalCommitEnabled: Boolean,
+    private val scriptWriter: ScriptWriter,
+    private val scriptService: ScriptService
+) {
     private val logger = KotlinLogging.logger {}
 
     fun commitScripts() {
         logger.debug { "Committing scripts..." }
 
-        val scripts = OmnitrackerDatabase().scripts.values
+        val scripts = scriptService.list()
 
         val git = GitRepository(
             gitRepositoryUri,
