@@ -9,8 +9,7 @@ object EnvironmentUtils {
     /**
      * Add a new environment variable to the environment of the JVM
      */
-    fun addEnvironmentVariable(key: String, value: String)
-    {
+    fun addEnvironmentVariable(key: String, value: String) {
         logger.debug { "Setting environment variable '$key'='$value'..." }
         val env = System.getenv().toMutableMap()
         env[key] = value

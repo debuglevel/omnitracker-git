@@ -10,7 +10,7 @@ import javax.inject.Singleton
 @Singleton
 class ScriptService(
     @Property(name = "app.omnitrackergit.database.connectionstring") val connectionString: String
-    ) {
+) {
     private val logger = KotlinLogging.logger {}
 
     init {
