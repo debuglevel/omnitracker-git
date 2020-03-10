@@ -5,9 +5,13 @@ import java.nio.file.Files
 
 val File.recursiveFileCount: Long
     get() {
-        return Files
-            .walk(this.toPath())
-            .parallel()
-            .filter { p -> !p.toFile().isDirectory }
-            .count()
+        return if (!this.exists()) {
+            0
+        } else {
+            Files
+                .walk(this.toPath())
+                .parallel()
+                .filter { p -> !p.toFile().isDirectory }
+                .count()
+        }
     }

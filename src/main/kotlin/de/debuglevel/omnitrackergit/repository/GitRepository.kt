@@ -18,6 +18,9 @@ class GitRepository(
     private var localGitDirectory = directory.toFile()
     private lateinit var git: Git
 
+    /**
+     * Clones the remote git repository into the specified local directory
+     */
     fun clone() {
         logger.debug { "Cloning '$repositoryUri' to '${localGitDirectory.absolutePath}'..." }
 
@@ -31,7 +34,33 @@ class GitRepository(
         logger.debug { "Cloned '$repositoryUri' to '${localGitDirectory.absolutePath}'" }
     }
 
-    fun addAll() {
+    /**
+     * Removes all files from within the local git repository
+     */
+    fun removeAllFiles() {
+        logger.debug { "Removing all files..." }
+
+        localGitDirectory.walkTopDown().forEach {
+            val relativeDirectory = it.relativeTo(localGitDirectory)
+
+            if (!relativeDirectory.startsWith(".git") && relativeDirectory.toString().isNotEmpty()) {
+                logger.trace { "Removing subdirectory '$relativeDirectory'..." }
+
+                git.rm()
+                    .addFilepattern(relativeDirectory.toString())
+                    .call()
+
+                relativeDirectory.delete()
+            }
+        }
+
+        logger.debug { "Removed all files" }
+    }
+
+    /**
+     * Adds all files in the local directory to the local git repository
+     */
+    fun addAllFiles() {
         logger.debug { "Adding all files..." }
 
         git.add()
@@ -41,23 +70,29 @@ class GitRepository(
         logger.debug { "Added all files" }
     }
 
+    /**
+     * Commits the changes to the local repository
+     */
     fun commit() {
         logger.debug { "Committing files..." }
 
         if (git.status().call().hasUncommittedChanges()) {
-            val uncommittedChangesCound = git.status().call().uncommittedChanges.count()
+            val uncommittedChangesCount = git.status().call().uncommittedChanges.count()
 
             val commitCommand = git.commit()
-                .setMessage("Committing $uncommittedChangesCound changed files by omnitracker-git")
+                .setMessage("Committing $uncommittedChangesCount changed files by omnitracker-git")
                 .setAuthor("omnitracker-git", "omnitrackergit@invalid.invalid")
                 .call()
 
-            logger.debug { "Committed files" }
+            logger.debug { "Committed $uncommittedChangesCount files" }
         } else {
             logger.debug { "Not committing, as there are no uncommitted changes." }
         }
     }
 
+    /**
+     * Pushes the local git repository to the remote git repository
+     */
     fun push() {
         logger.debug { "Pushing to remote..." }
 
@@ -75,35 +110,21 @@ class GitRepository(
         }
     }
 
-    fun delete() {
-        logger.debug { "Deleting repository (${localGitDirectory.recursiveFileCount} files)..." }
-        val fullyDeleted = localGitDirectory.deleteRecursively()
-        logger.debug { "Deleted repository. Full deletion succeeded: $fullyDeleted; (${localGitDirectory.recursiveFileCount} files left)" }
-    }
-
-    fun removeAll() {
-        logger.debug { "Removing all files..." }
-
-        localGitDirectory.walkTopDown().forEach {
-            val relativeDirectory = it.relativeTo(localGitDirectory)
-
-            if (!relativeDirectory.startsWith(".git") && relativeDirectory.toString().isNotEmpty()) {
-                logger.trace { "Removing $relativeDirectory..." }
-
-                git.rm()
-                    .addFilepattern(relativeDirectory.toString())
-                    .call()
-
-                relativeDirectory.delete()
-            }
-        }
-
-        logger.debug { "Removed all files" }
-    }
-
+    /**
+     * Closes git
+     */
     fun close() {
         logger.trace { "Closing..." }
         git.close()
         logger.trace { "Closed" }
+    }
+
+    /**
+     * Deletes the local git repository/directory
+     */
+    fun deleteRepository() {
+        logger.debug { "Deleting repository '${localGitDirectory.absolutePath}' (${localGitDirectory.recursiveFileCount} files)..." }
+        val fullyDeleted = localGitDirectory.deleteRecursively()
+        logger.debug { "Deleted repository '${localGitDirectory.absolutePath}'. Full deletion succeeded: $fullyDeleted; (${localGitDirectory.recursiveFileCount} files left)" }
     }
 }

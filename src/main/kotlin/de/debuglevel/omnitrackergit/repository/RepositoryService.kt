@@ -30,14 +30,19 @@ class RepositoryService(
             temporaryGitDirectory
         )
 
-        git.clone()
-        git.removeAll()
-        scriptWriter.writeFiles(scripts, temporaryGitDirectory)
-        git.addAll()
-        git.commit()
-        git.push()
-        git.close()
-        git.delete()
+        try {
+            git.clone()
+            git.removeAllFiles()
+            scriptWriter.writeFiles(scripts, temporaryGitDirectory)
+            git.addAllFiles()
+            git.commit()
+            git.push()
+        } catch (e: Exception) {
+            logger.error(e) { "Something failed during committing scripts" }
+        } finally {
+            git.close()
+            git.deleteRepository()
+        }
 
         logger.debug { "Committed scripts" }
     }
