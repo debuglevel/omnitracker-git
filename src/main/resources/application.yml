@@ -9,7 +9,7 @@ app:
         user: "myUser"
         password: "myPassword"
     scheduled-commits:
-      enabled: true
+      enabled: false
       interval: 60s
 
   security:

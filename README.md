@@ -7,73 +7,36 @@
 
 # OMNITRACKER git
 
-OMNITRACKER stores scripts in the `scripts` database table.
-Unfortunately, there is no version control of these scripts (except your
-database backups). `omnitracker-git` extracts all scripts and commits them into a
-git repository.
-This can be run as a one-shot or as a daemon (pulling
-every X seconds).
+OMNITRACKER stores scripts in the `scripts` database table. Unfortunately, there is no version control of these scripts (except your database backups).
+`omnitracker-git` extracts all scripts from the database and commits them into a git repository. It's a REST microservice which commits all scripts on a POST request. This can also be scheduled to be done e.g. every 60 seconds.
 
-# Usage
-```
-$ java -jar .\build\libs\omnitrackergit-0.0.1-SNAPSHOT-all.jar
-Usage: omnitrackergit [OPTIONS] COMMAND [ARGS]...
 
-Options:
-  -h, --help  Show this message and exit
+# HTTP API
 
-Commands:
-  list    List all scripts
-  export  Export scripts into local directory
-  commit  Commit scripts to git repository
-```
+## Start commit
 
-An `configuration.properties` file must exist in the working directory
-(or the corresponding environment variables, e.g. `DATABASE_CONNECTION_STRING`, are set) to
-determine the database and the git settings:
+To commit scripts to the git repository, POST a request:
+
 ```
-database.connection.string=jdbc:ucanaccess://OT-Templates.mdb
-#database.connection.string=jdbc:sqlserver://myhost\\MYINSTANCE;databaseName=mydatabase;user=myuser;password=mypassword
-git.repository.uri=https://git.myhost.com/omnitrackerscripts
-git.user=myUser
-git.password=myPassword
+$ curl -X POST 'http://localhost:8080/repository/' --header 'Authorization: Basic U0VDUkVUX1VTRVJOQU1FOlNFQ1JFVF9QQVNTV09SRA=='
 ```
-Microsoft Access (via `ucanaccess` JDBC driver) and MSSQL (official
-Microsoft JDBC driver) are supported.
 
 ## List all scripts
-To list all scripts, use the `list` command (although this is rather a command to check for a working database connection than anything useful): 
+You can also list all existing scripts (although this is rather a command to check for a working database connection than anything useful):
 ```
-$ java -jar .\build\libs\omnitrackergit-0.0.1-SNAPSHOT-all.jar list
-274     | \(Alle Ordner)\BasicStat_Snapshot_AddPercentage
-316790  | \(Alle Ordner)\00. Basisdaten\00. 01 Web-Content\CancelAction Check Start and End Visible Date
-306858  | \(Alle Ordner)\00. Basisdaten\00. 02 Web-Navigation\CancelAction Check Start and End Visible Date
-540737  | \(Alle Ordner)\00. Basisdaten\00. 02 Web-Navigation\Declarations
-540740  | \(Alle Ordner)\00. Basisdaten\00. 02 Web-Navigation\OnAfterFieldChanged
-540744  | \(Alle Ordner)\00. Basisdaten\00. 02 Web-Navigation\OnClick
-540741  | \(Alle Ordner)\00. Basisdaten\00. 02 Web-Navigation\OnClick
-540742  | \(Alle Ordner)\00. Basisdaten\00. 02 Web-Navigation\OnClick
-540743  | \(Alle Ordner)\00. Basisdaten\00. 02 Web-Navigation\OnClick
-540738  | \(Alle Ordner)\00. Basisdaten\00. 02 Web-Navigation\OnOpen
-540739  | \(Alle Ordner)\00. Basisdaten\00. 02 Web-Navigation\OnTimer
-458804  | \(Alle Ordner)\00. Basisdaten\00. 03 Web-Funktionen\OnOpen
+curl -X GET 'http://localhost:8080/scripts/' --header 'Authorization: Basic U0VDUkVUX1VTRVJOQU1FOlNFQ1JFVF9QQVNTV09SRA=='
 ```
 
-## Export all scripts
-To export all scripts to a local directory named `target`, use the `export` command:
-```
-$ java -jar .\build\libs\omnitrackergit-0.0.1-SNAPSHOT-all.jar export target
-```
+# Configuration
 
-## Commit all scripts
-To commit the current state of all scripts to the git repository defined in your configuration, use the `commit` command:
-```
-$ java -jar .\build\libs\omnitrackergit-0.0.1-SNAPSHOT-all.jar commit
-```
+There is a `application.yml` included in the jar file. Its content can be modified and saved as a separate `application.yml` on the level of the jar file. Configuration can also be applied via the other supported ways of Micronaut (see <https://docs.micronaut.io/latest/guide/index.html#config>). For Docker, the configuration via environment variables is the most interesting one (see `docker-compose.yml`).
 
 # Docker
-See `docker-compose.yml` for an example how to run this tool with Docker (which might be especially useful for running as a daemon). 
+See `docker-compose.yml` for an example how to run this tool with Docker. 
 
 # Security
-For MSSQL, you should create a special user which has read-only access the
-`scripts`, `ProblemArea`, `stringTranslations` and `stringTransShort` tables.
+For MSSQL, you should create a special user which has read-only access the `scripts`, `ProblemArea`, `stringTranslations` and `stringTransShort` tables.
+
+# Database types
+MSSQL (official Microsoft JDBC driver) and Microsoft Access (via `ucanaccess` JDBC driver; but rather slow) are supported.
+
