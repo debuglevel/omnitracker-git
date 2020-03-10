@@ -104,7 +104,7 @@ class GitRepository(
 
         try {
             val messages = pushCommand.call().joinToString(";") { it.messages }
-            logger.trace { "Messages from push result: $messages" }
+            logger.debug { "Messages from push result: $messages" }
         } catch (e: InvalidRemoteException) {
             logger.error(e) { "Pushing to remote failed" }
         }
