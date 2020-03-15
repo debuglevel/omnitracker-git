@@ -6,6 +6,7 @@ app:
     git:
       repository:
         uri: "C:\\Temp\\baregit"
+        branch: "master"
         user: "myUser"
         password: "myPassword"
     scheduled-commits:

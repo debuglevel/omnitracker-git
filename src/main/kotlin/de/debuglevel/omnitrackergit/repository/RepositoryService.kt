@@ -9,6 +9,7 @@ import javax.inject.Singleton
 @Singleton
 class RepositoryService(
     @Property(name = "app.omnitrackergit.git.repository.uri") val gitUri: String,
+    @Property(name = "app.omnitrackergit.git.repository.branch") val gitBranch: String,
     @Property(name = "app.omnitrackergit.git.repository.user") val gitUser: String,
     @Property(name = "app.omnitrackergit.git.repository.password") val gitPassword: String,
     private val scriptWriter: ScriptWriter,
@@ -25,6 +26,7 @@ class RepositoryService(
 
         val git = GitRepository(
             gitUri,
+            gitBranch,
             gitUser,
             gitPassword,
             temporaryGitDirectory

@@ -8,6 +8,7 @@ import java.nio.file.Path
 
 class GitRepository(
     private val repositoryUri: String,
+    private val branch: String,
     username: String,
     password: String,
     directory: Path
@@ -22,16 +23,17 @@ class GitRepository(
      * Clones the remote git repository into the specified local directory
      */
     fun clone() {
-        logger.debug { "Cloning '$repositoryUri' to '${localGitDirectory.absolutePath}'..." }
+        logger.debug { "Cloning '$repositoryUri' branch '$branch' to '${localGitDirectory.absolutePath}'..." }
 
         git = Git
             .cloneRepository()
             .setURI(repositoryUri)
             .setCredentialsProvider(credentialsProvider)
+            .setBranch(branch)
             .setDirectory(localGitDirectory)
             .call()
 
-        logger.debug { "Cloned '$repositoryUri' to '${localGitDirectory.absolutePath}'" }
+        logger.debug { "Cloned '$repositoryUri' branch '$branch' to '${localGitDirectory.absolutePath}'" }
     }
 
     /**
