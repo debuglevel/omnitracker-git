@@ -1,8 +1,5 @@
 app:
   omnitrackergit:
-    database:
-      connectionstring: "jdbc:ucanaccess://OT-Templates.mdb"
-      #connectionstring: "jdbc:sqlserver://myhost\\MYINSTANCE;databaseName=mydatabase;user=myuser;password=mypassword"
     git:
       repository:
         uri: "C:\\Temp\\baregit"
@@ -17,6 +14,10 @@ app:
     configurable-credential-authentication:
       username: "SECRET_USERNAME"
       password: "SECRET_PASSWORD"
+
+database:
+  connectionstring: "jdbc:ucanaccess://OT-Templates.mdb"
+  #connectionstring: "jdbc:sqlserver://myhost\\MYINSTANCE;databaseName=mydatabase;user=myuser;password=mypassword"
 
 micronaut:
   application:

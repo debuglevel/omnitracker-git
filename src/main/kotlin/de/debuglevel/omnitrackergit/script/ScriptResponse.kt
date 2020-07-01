@@ -1,6 +1,6 @@
 package de.debuglevel.omnitrackergit.script
 
-import de.debuglevel.omnitrackerdatabasebinding.models.Script
+import de.debuglevel.omnitrackerdatabasebinding.script.Script
 
 data class ScriptResponse(
     var id: Int,
