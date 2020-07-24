@@ -2,9 +2,15 @@ package de.debuglevel.omnitrackergit.repository
 
 import mu.KotlinLogging
 import org.eclipse.jgit.api.Git
+import org.eclipse.jgit.api.ListBranchCommand
 import org.eclipse.jgit.api.errors.InvalidRemoteException
+import org.eclipse.jgit.revwalk.RevCommit
+import org.eclipse.jgit.revwalk.RevSort
+import org.eclipse.jgit.revwalk.RevWalk
 import org.eclipse.jgit.transport.UsernamePasswordCredentialsProvider
+import java.io.IOException
 import java.nio.file.Path
+
 
 class GitRepository(
     private val repositoryUri: String,
@@ -33,7 +39,77 @@ class GitRepository(
             .setDirectory(localGitDirectory)
             .call()
 
+        createBranch()
+
         logger.debug { "Cloned '$repositoryUri' branch '$branch' to '${localGitDirectory.absolutePath}'" }
+    }
+
+    /**
+     * Creates the remote branch if it does not exist already.
+     * XXX: Probably creates the branch on the latest commit in "master" branch.
+     */
+    private fun createBranch() {
+        logger.debug { "Creating branch '$branch' on '$repositoryUri' if not existing..." }
+
+        if (!checkBranchExists()) {
+            logger.debug { "Creating new branch '$branch'..." }
+            // XXX: Don't know what actually happens here, but it works in contrast to many other variants.
+            val ref = git.checkout()
+                .setCreateBranch(true)
+                .setName(branch)
+                .setStartPoint("origin/master")
+                .call()
+            logger.debug { "Created new branch '$branch': $ref" }
+        }
+    }
+
+    private fun getFirstCommit(): RevCommit {
+        val revWalk = RevWalk(git.repository)
+        try {
+
+            val headId = git.repository.readOrigHead()
+
+            //val headId = git.repository.resolve(Constants.HEAD)
+            val root = revWalk.parseCommit(headId)
+            revWalk.sort(RevSort.REVERSE)
+            revWalk.markStart(root)
+            val revCommit = revWalk.next()
+
+            return revCommit
+        } catch (e: IOException) {
+            throw e
+        }
+    }
+
+//    private fun checkBranchExists(): Boolean {
+//        logger.debug { "Checking if branch '$branch' on '$repositoryUri' exists..." }
+//        val refs = Git.lsRemoteRepository()
+//            .setHeads(true)
+//            .setRemote(repositoryUri)
+//            .call()
+//
+//        val branchNames = refs.map { it.name.replace("refs/heads/", "") }
+//        logger.trace { "Branches on remote: " + branchNames.joinToString { it }}
+//
+//        val isBranchExisting = branchNames.contains(branch)
+//
+//        logger.debug { "Checked if branch '$branch' on '$repositoryUri' exists: $isBranchExisting" }
+//        return isBranchExisting
+//    }
+
+    private fun checkBranchExists(): Boolean {
+        logger.debug { "Checking if branch '$branch' exists..." }
+        val refs = git.branchList()
+            .setListMode(ListBranchCommand.ListMode.ALL)
+            .call()
+
+        val branchNames = refs.map { it.name.replace("refs/heads/", "") }
+        logger.trace { "Branches: " + branchNames.joinToString { it } }
+
+        val isBranchExisting = branchNames.contains(branch)
+
+        logger.debug { "Checked if branch '$branch' exists: $isBranchExisting" }
+        return isBranchExisting
     }
 
     /**

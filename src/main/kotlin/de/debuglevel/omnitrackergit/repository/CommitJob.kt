@@ -20,6 +20,7 @@ class CommitJob(
         if (scheduledCommitsEnabled) {
             logger.debug { "Periodically committing scripts..." }
             repositoryService.commitScripts()
+            repositoryService.commitLayouts()
             logger.debug { "Periodically committed scripts" }
         }
     }

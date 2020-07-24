@@ -19,6 +19,7 @@ class RepositoryController(private val repositoryService: RepositoryService) {
         logger.debug("Called postOne()")
         return try {
             repositoryService.commitScripts()
+            repositoryService.commitLayouts()
 
             HttpResponse.ok<Any>()
         } catch (e: Exception) {
