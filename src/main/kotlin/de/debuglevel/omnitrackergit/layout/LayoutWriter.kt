@@ -13,10 +13,10 @@ import javax.inject.Singleton
 class LayoutWriter {
     private val logger = KotlinLogging.logger {}
 
-    fun writeFiles(scripts: Collection<Layout>, baseDirectory: Path) {
+    fun writeFiles(layouts: Collection<Layout>, baseDirectory: Path) {
         logger.debug { "Writing layout files..." }
-        scripts.forEach { writeFile(it, baseDirectory) }
-        logger.debug { "Wrote layout files" }
+        layouts.forEach { writeFile(it, baseDirectory) }
+        logger.debug { "Wrote ${layouts.size} layout files" }
     }
 
     private fun writeFile(layout: Layout, baseDirectory: Path) {
