@@ -58,7 +58,7 @@ class RepositoryService(
     fun commitLayouts() {
         logger.debug { "Committing layouts..." }
 
-        val scripts = layoutService.getLayouts()
+        val layouts = layoutService.getLayouts()
 
         val temporaryGitDirectory = createTempDir("omnitracker-git").toPath()
 
@@ -74,7 +74,7 @@ class RepositoryService(
         try {
             git.clone()
             git.removeAllFiles()
-            layoutWriter.writeFiles(scripts, temporaryGitDirectory)
+            layoutWriter.writeFiles(layouts, temporaryGitDirectory)
             git.addAllFiles()
             git.commit()
             git.push()
