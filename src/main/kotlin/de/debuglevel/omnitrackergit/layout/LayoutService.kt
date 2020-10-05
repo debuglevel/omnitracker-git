@@ -17,7 +17,7 @@ class LayoutService(
         layoutService.clearCache()
         val layouts = layoutService.getAll().values
 
-        logger.debug { "Got ${layouts.size} scripts" }
+        logger.debug { "Got ${layouts.size} layouts" }
         return layouts.toSet()
     }
 }
