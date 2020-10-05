@@ -11,9 +11,9 @@ object EnvironmentUtils {
      */
     fun addEnvironmentVariable(key: String, value: String) {
         logger.debug { "Setting environment variable '$key'='$value'..." }
-        val env = System.getenv().toMutableMap()
-        env[key] = value
-        setEnv(env)
+        val environment = System.getenv().toMutableMap()
+        environment[key] = value
+        setEnvironment(environment)
         logger.debug { "Set environment variable '$key'='$value'" }
     }
 
@@ -22,29 +22,29 @@ object EnvironmentUtils {
      *
      * Pure evil insane code from https://stackoverflow.com/a/7201825/4764279
      */
-    private fun setEnv(newenv: Map<String, String>) {
+    private fun setEnvironment(newEnvironment: Map<String, String>) {
         try {
             val processEnvironmentClass = Class.forName("java.lang.ProcessEnvironment")
             val theEnvironmentField = processEnvironmentClass.getDeclaredField("theEnvironment")
             theEnvironmentField.isAccessible = true
             val env = theEnvironmentField.get(null) as MutableMap<String, String>
-            env.putAll(newenv)
+            env.putAll(newEnvironment)
             val theCaseInsensitiveEnvironmentField =
                 processEnvironmentClass.getDeclaredField("theCaseInsensitiveEnvironment")
             theCaseInsensitiveEnvironmentField.isAccessible = true
-            val cienv = theCaseInsensitiveEnvironmentField.get(null) as MutableMap<String, String>
-            cienv.putAll(newenv)
+            val caseInsensitiveEnvironment = theCaseInsensitiveEnvironmentField.get(null) as MutableMap<String, String>
+            caseInsensitiveEnvironment.putAll(newEnvironment)
         } catch (e: NoSuchFieldException) {
             val classes = Collections::class.java.declaredClasses
-            val env = System.getenv()
+            val environment = System.getenv()
             for (cl in classes) {
                 if ("java.util.Collections\$UnmodifiableMap" == cl.name) {
                     val field = cl.getDeclaredField("m")
                     field.isAccessible = true
-                    val obj = field.get(env)
+                    val obj = field.get(environment)
                     val map = obj as MutableMap<String, String>
                     map.clear()
-                    map.putAll(newenv)
+                    map.putAll(newEnvironment)
                 }
             }
         }
